@@ -1,24 +1,44 @@
-import { Controller,Get, HttpException,Param,Post,Body } from '@nestjs/common';
+import { Controller,Get, HttpException,Param,Post,Body,Delete, Patch } from '@nestjs/common';
 import { error } from 'console';
+import {StudentService} from "./student.service"
+import { isStringObject } from 'util/types';
+import { IsString } from 'class-validator';
+
+export class CreateDto {
+    @IsString()
+    name: string;
+    @IsString()
+    id: string;
+  }
 
 @Controller('student')
 export class StudentController {
+ constructor(private StudentService:StudentService){ }
 
 @Get()
 getAll(){
-throw new HttpException("error",500) 
+    return this.StudentService.getAll();
 }
 
 @Get(':id')
-getOne(@Param('id') id: string) {
- throw new HttpException("error",500)
+getOne() {
+    return this.StudentService.getOne("id");
+}
+
+@Post()
+newStudent() {
+    return this.StudentService.newStudent("id");
+
+}
+
+@Delete()
+deleteStudent() {
+    return this.StudentService.deleteStudent("id");
 }
 
 
-@Post(':id')
-newStudent(@Param(':id') id: string ) {
-    throw new HttpException("error",500)
-
+@Patch()
+updateStudent(@Body() CreateDto: CreateDto ) {
+    return this.StudentService.updateStudent("id");
 }
-
 }
